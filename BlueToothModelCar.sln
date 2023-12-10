@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlueToothModelCar", "BlueToothModelCar.csproj", "{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Folder", "Solution Folder", "{B6896A8B-6D98-4D21-8B8E-E1961FEF95E4}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		BlueToothModelCar.sln.DotSettings = BlueToothModelCar.sln.DotSettings
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM64 = Debug|ARM64
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|ARM64 = Release|ARM64
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Debug|ARM64.Build.0 = Debug|ARM64
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Debug|x64.ActiveCfg = Debug|x64
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Debug|x64.Build.0 = Debug|x64
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Debug|x64.Deploy.0 = Debug|x64
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Debug|x86.ActiveCfg = Debug|x86
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Debug|x86.Build.0 = Debug|x86
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Debug|x86.Deploy.0 = Debug|x86
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Release|ARM64.ActiveCfg = Release|ARM64
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Release|ARM64.Build.0 = Release|ARM64
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Release|ARM64.Deploy.0 = Release|ARM64
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Release|x64.ActiveCfg = Release|x64
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Release|x64.Build.0 = Release|x64
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Release|x64.Deploy.0 = Release|x64
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Release|x86.ActiveCfg = Release|x86
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Release|x86.Build.0 = Release|x86
+		{FEA7B6DF-BCC2-4E5F-B58A-48BBB637F8DA}.Release|x86.Deploy.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {89540110-93BC-401D-BD92-48E45EA4267C}
+	EndGlobalSection
+EndGlobal

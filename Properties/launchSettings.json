@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "BlueToothModelCar": {
+      "commandName": "MsixPackage"
+    },
+    "BlueToothModelCar (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
