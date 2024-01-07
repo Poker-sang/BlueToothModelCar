@@ -8,7 +8,6 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
-        CurrentContext.Title = "自平衡车";
     }
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
@@ -17,8 +16,9 @@ public partial class App : Application
         mainWindow.Initialize(new()
         {
             Size = new(600, 800),
-            TitleBarType = TitleBarType.Window,
-        }, nameof(BlueToothModelCar), CurrentContext.TitleBar);
+            ExtendTitleBar = true,
+            Title = nameof(BlueToothModelCar)
+        });
         mainWindow.Activate();
     }
 }

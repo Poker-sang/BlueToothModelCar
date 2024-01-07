@@ -246,22 +246,28 @@ internal class BlueToothCore
         if (gattCharacteristic.CharacteristicProperties.HasFlag(GattCharacteristicProperties.Write))
             CurrentWriteCharacteristic = gattCharacteristic;
         if (gattCharacteristic.CharacteristicProperties.HasFlag(GattCharacteristicProperties.Notify))
+        {
             CurrentNotifyCharacteristic = gattCharacteristic;
+            CurrentNotifyCharacteristic.ProtectionLevel = GattProtectionLevel.Plain;
+            CurrentNotifyCharacteristic.ValueChanged += Characteristic_ValueChanged;
+            EnableNotifications(CurrentNotifyCharacteristic);
+        }
 
-        if ((uint)gattCharacteristic.CharacteristicProperties == 26)
+        if ((uint)gattCharacteristic.CharacteristicProperties is 26)
         {
 
         }
 
-        if (gattCharacteristic.CharacteristicProperties == (GattCharacteristicProperties.Write | GattCharacteristicProperties.Notify))
+        if (gattCharacteristic.CharacteristicProperties is (GattCharacteristicProperties.Write | GattCharacteristicProperties.Notify))
         {
             CurrentWriteCharacteristic = gattCharacteristic;
             CurrentNotifyCharacteristic = gattCharacteristic;
             CurrentNotifyCharacteristic.ProtectionLevel = GattProtectionLevel.Plain;
             CurrentNotifyCharacteristic.ValueChanged += Characteristic_ValueChanged;
-            CurrentDevice.ConnectionStatusChanged += CurrentDevice_ConnectionStatusChanged;
             EnableNotifications(CurrentNotifyCharacteristic);
         }
+
+        CurrentDevice.ConnectionStatusChanged += CurrentDevice_ConnectionStatusChanged;
     }
 
     private void OnAdvertisementReceived(BluetoothLEAdvertisementWatcher watcher, BluetoothLEAdvertisementReceivedEventArgs eventArgs) =>

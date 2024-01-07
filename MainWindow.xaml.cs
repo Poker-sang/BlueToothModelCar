@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -13,7 +14,8 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Imaging;
 using WinRT;
-using WinUI3Utilities;
+using Windows.Storage;
+using Windows.Storage.Streams;
 
 namespace BlueToothModelCar;
 
@@ -28,15 +30,12 @@ public sealed partial class MainWindow : Window
 
     public MainWindow()
     {
-        CurrentContext.Window = this;
         _core.DeviceWatcherChanged += DeviceWatcherChanged;
         _core.CharacteristicFinish += CharacteristicFinish;
         _core.RecData += RecData;
         _core.NewDevice += sender => DispatcherQueue.TryEnqueue(() => _devices.Add(new(sender.Name, sender.DeviceId, sender)));
         _core.StartBleDeviceWatcher();
         InitializeComponent();
-        CurrentContext.TitleBar = TitleBar;
-        CurrentContext.TitleTextBlock = TitleTextBlock;
         AddRoutedEventHandler(Forward, Button_Forward);
         AddRoutedEventHandler(Backward, Button_Backward);
         AddRoutedEventHandler(TurnLeft, Button_TurnLeft);
@@ -65,27 +64,49 @@ public sealed partial class MainWindow : Window
 
     private bool Cancel { get; set; }
 
+    private bool CaptureFrame { get; set; }
+
+    private bool IsOpen { get; set; }
+
     private async void StreamLoop()
     {
         while (!Cancel)
         {
             try
             {
-                var bytes = await _client.GetByteArrayAsync("http://192.168.198.189/capture");
-                await using var stream = new MemoryStream(bytes);
-                var randomAccessStream = stream.AsRandomAccessStream();
-                _ = DispatcherQueue.TryEnqueue(() =>
+                _ = DispatcherQueue.TryEnqueue(async () =>
                 {
+                    var bytes = await _client.GetByteArrayAsync("http://192.168.26.189/capture");
+                    var stream = new MemoryStream(bytes);
                     var source = new BitmapImage();
-                    source.SetSource(randomAccessStream);
-                    Image.Source = source;
+                    source.SetSource(stream.AsRandomAccessStream());
+                    if (CaptureFrame && !IsOpen)
+                    {
+                        CaptureFrame = false;
+                        ContentDialogImage.Source = source;
+                        var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(DateTime.Now.ToString(CultureInfo.CurrentCulture).Replace(':', ' ').Replace('/', ' ') + ".png");
+                        await using (var s = await file.OpenStreamForWriteAsync())
+                        {
+                            stream.Position = 0;
+                            await stream.CopyToAsync(s);
+                        }
+                        IsOpen = true;
+                        _ = await ContentDialog.ShowAsync();
+                    }
+                    else
+                        Image.Source = source;
                 });
             }
             catch
             {
             }
-            await Task.Delay(100);
+            await Task.Delay(1000);
         }
+    }
+
+    private void ContentDialog_CloseButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+    {
+        IsOpen = false;
     }
 
     private async void GamepadLoop()
@@ -117,6 +138,10 @@ public sealed partial class MainWindow : Window
             }
         }
     }
+    private async void UIElement_OnTapped(object sender, TappedRoutedEventArgs e)
+    {
+        _ = await Launcher.LaunchFolderPathAsync(ApplicationData.Current.LocalFolder.Path);
+    }
 
     private void AddRoutedEventHandler(UIElement element, PointerEventHandler handler)
     {
@@ -132,10 +157,13 @@ public sealed partial class MainWindow : Window
         }
     }
 
-    private static void RecData(GattCharacteristic sender, byte[] data)
+    private void RecData(GattCharacteristic sender, byte[] data)
     {
         var str = BitConverter.ToString(data);
-        Debug.WriteLine(sender.Uuid + "             " + str);
+        if (str.Contains("4B"))
+            CaptureFrame = true;
+        else
+            Debug.WriteLine(sender.Uuid + "             " + str);
     }
 
     private void DeviceWatcherChanged(BluetoothLEDevice currentDevice)
